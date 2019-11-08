@@ -2,6 +2,7 @@ package searchlinks.web;
 
 import searchlinks.dao.SitesDAO;
 import searchlinks.dao.UsersDAO;
+import searchlinks.entities.Page;
 import searchlinks.entities.Site;
 import searchlinks.entities.User;
 
@@ -37,8 +38,8 @@ public class GetPagesServlet extends HttpServlet {
         manager.getTransaction().commit();
 
         try {
-            List<Site> sites = sitesDao.findByOwner(found);
-            req.setAttribute("sites", sites);
+            List<Page> pages = newSite.getPages(domain);
+            req.setAttribute("pages", pages);
             req.getRequestDispatcher("/pages.jsp").forward(req, resp);
         } catch (NoResultException notFound) {
             req.getRequestDispatcher("/").forward(req, resp);

@@ -35,17 +35,17 @@ public class Site {
         pages = new ArrayList<>();
     }
 
-//    public List<Page> getPages(String domain) {
-//        Document doc = null;
-//        try {
-//            doc = Jsoup.connect(domain).get();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        for (Element e : doc.select("loc")) {
-//            pages.add(new Page(this, e.text()));
-//            System.out.println(e.text());
-//        }
-//        return pages;
-//    }
+    public List<Page> getPages(String domain) {
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(domain).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (Element e : doc.select("loc")) {
+            pages.add(new Page(this, e.text()));
+            System.out.println(e.text());
+        }
+        return pages;
+    }
 }
