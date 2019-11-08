@@ -21,4 +21,11 @@ public class UsersDAO {
                 .setParameter("p", login)
                 .getSingleResult();
     }
+
+    public User findById(int userId) {
+        return manager.createQuery(
+                "from User where id = :p", User.class)
+                .setParameter("p", userId)
+                .getSingleResult();
+    }
 }

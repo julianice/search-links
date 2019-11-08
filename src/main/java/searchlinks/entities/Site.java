@@ -18,7 +18,7 @@ public class Site {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String domain;
 
     @ManyToOne
@@ -26,6 +26,8 @@ public class Site {
 
     @OneToMany
     private List<Page> pages;
+
+    public Site(){}
 
     public Site(User user, String domain) {
         this.owner = user;
