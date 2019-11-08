@@ -24,4 +24,8 @@ public class PagesDAO {
         ).setParameter("p", site.getId())
                 .getResultList();
     }
+
+    public void createPages() {
+
+    }
 }

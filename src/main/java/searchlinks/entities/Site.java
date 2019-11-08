@@ -1,8 +1,12 @@
 package searchlinks.entities;
 
 import lombok.Data;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,4 +32,18 @@ public class Site {
         this.domain = domain;
         pages = new ArrayList<>();
     }
+
+//    public List<Page> getPages(String domain) {
+//        Document doc = null;
+//        try {
+//            doc = Jsoup.connect(domain).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        for (Element e : doc.select("loc")) {
+//            pages.add(new Page(this, e.text()));
+//            System.out.println(e.text());
+//        }
+//        return pages;
+//    }
 }

@@ -36,4 +36,6 @@ public class PageTest extends BaseTest {
 
         Assert.assertNotNull(manager.find(Page.class, page.getId()));
     }
+
+
 }

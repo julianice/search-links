@@ -3,6 +3,7 @@ package searchlinksTests.entities;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import searchlinks.entities.Page;
 import searchlinks.entities.Site;
 import searchlinks.entities.User;
 import searchlinksTests.BaseTest;
@@ -52,6 +53,13 @@ public class SiteTest extends BaseTest {
         assertEquals(site.getId(), found.getId());
         assertEquals(SITE, found.getDomain());
     }
+
+//    @Test
+//    public void getPages() {
+//        Site site = new Site(owner, "https://habr.com/sitemap/sitemap1.xml");
+//        manager.persist(site);
+//        site.getPages("https://habr.com/sitemap/sitemap1.xml");
+//    }
 
     //TODO добавление path
 }
