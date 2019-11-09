@@ -22,6 +22,14 @@ public class UsersDAO {
                 .getSingleResult();
     }
 
+    public User findByLoginAndPassword(String login, String password) {
+        return manager.createQuery(
+                "from User where login = :l and password = :p", User.class)
+                .setParameter("l", login)
+                .setParameter("p", password)
+                .getSingleResult();
+    }
+
     public User findById(int userId) {
         return manager.createQuery(
                 "from User where id = :p", User.class)

@@ -24,15 +24,27 @@ public class LoginServlet extends HttpServlet {
         EntityManagerFactory factory = StartupListener.getFactory(req.getServletContext());
         EntityManager manager = factory.createEntityManager();
         UsersDAO dao = new UsersDAO(manager);
+
         try {
-            User found = dao.findByLogin(login);
+            User found = dao.findByLoginAndPassword(login, password);
             req.getSession().setAttribute("userId", found.getId());
             resp.sendRedirect("/dashboard");
         } catch (NoResultException notFound) {
-            req.getRequestDispatcher("/index.jsp?login=" + login).forward(req, resp);
+            try {
+                if (dao.findByLogin(login) != null) {
+                    req.getRequestDispatcher("/index.jsp").forward(req, resp);
+                }
+            } catch (NoResultException notFound2) {
+                User newUser = new User(login, password);
+                manager.getTransaction().begin();
+                dao.create(newUser);
+                manager.getTransaction().commit();
+                req.getSession().setAttribute("userId", newUser.getId());
+                resp.sendRedirect("/dashboard");
+            }
+
         } finally {
             manager.close();
         }
     }
 }
-

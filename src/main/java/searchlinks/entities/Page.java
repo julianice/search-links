@@ -53,8 +53,9 @@ public class Page {
             e.printStackTrace();
         }
         for (Element e : doc.select("a[href]")) {
-            System.out.println(e.attr("href"));
-            this.links.add(new Link(this, e.attr("href")));
+                if(e.attr("href").contains("http")){
+                    this.links.add(new Link(this, e.attr("href")));
+                }
         }
         return links;
     }
