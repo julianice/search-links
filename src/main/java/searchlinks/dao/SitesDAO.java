@@ -23,4 +23,11 @@ public class SitesDAO {
         ).setParameter("p", user.getId())
                 .getResultList();
     }
+
+    public Site findByDomain(String domain) {
+        return manager.createQuery(
+                "from Site where domain = :p", Site.class
+        ).setParameter("p", domain)
+                .getSingleResult();
+    }
 }

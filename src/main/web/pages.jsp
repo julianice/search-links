@@ -4,7 +4,6 @@
 <jsp:useBean id="pages" scope="request" type="java.util.List<searchlinks.entities.Page>"/>
 <html>
 <head>
-<%--    <title>Your pages</title>--%>
 </head>
 <body>
 
@@ -25,5 +24,8 @@
     </tbody>
 </table>
 
+<form method="get" action="/getlinks">
+    <p><input type="submit" NAME="Get links!!"></p>
+</form>
 </body>
 </html>

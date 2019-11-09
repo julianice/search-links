@@ -4,6 +4,8 @@ import lombok.Data;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import searchlinks.dao.PagesDAO;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -35,6 +37,11 @@ public class Site {
         pages = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return "";
+    }
+
     public List<Page> getPages(String domain) {
         Document doc = null;
         try {
@@ -42,10 +49,14 @@ public class Site {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (Element e : doc.select("loc")) {
-            pages.add(new Page(this, e.text()));
-            System.out.println(e.text());
+        Elements elements = doc.select("loc");
+        for(int i  = 0; i < 10; i++) {
+            Page page = new Page(this, elements.get(i).text());
+            pages.add(page);
         }
+//        for (Element e : doc.select("loc")) {
+//            pages.add(new Page(this, e.text()));
+//        }
         return pages;
     }
 }

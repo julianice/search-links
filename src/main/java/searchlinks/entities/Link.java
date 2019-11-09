@@ -23,6 +23,11 @@ public class Link {
 
     public Link() {}
 
+    @Override
+    public String toString() {
+        return "";
+    }
+
     public Link(Page page, String url) {
         this.page  = page;
         this.url = url;
