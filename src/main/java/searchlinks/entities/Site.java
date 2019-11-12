@@ -54,6 +54,7 @@ public class Site {
             Page page = new Page(this, elements.get(i).text());
             pages.add(page);
         }
+        //пока ограничила 10 страницами
 //        for (Element e : doc.select("loc")) {
 //            pages.add(new Page(this, e.text()));
 //        }

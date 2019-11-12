@@ -7,12 +7,12 @@
 </head>
 <body>
 
-<h1>Your pages: </h1>
+<h1>Pages</h1>
 
 <table>
     <thead>
         <tr>
-            <th>Page path</th>
+            <th>Your pages: </th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +24,7 @@
     </tbody>
 </table>
 
-<form method="get" action="/getlinks">
+<form method="post" action="/getlinks">
     <p><input type="submit" NAME="Get links!!"></p>
 </form>
 </body>

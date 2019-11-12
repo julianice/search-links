@@ -8,7 +8,7 @@
 <body>
 
 <form method="post" action="/getpages">
-    <p>Enter domain for search links: <input type="text" name="domain" value="${param['domain']}"></p>
+    <p>Enter URL with sitemap for search links: <input type="text" name="domain" value="${param['urlWithSitemap']}"></p>
     <p><input type="submit"></p>
 </form>
 </body>

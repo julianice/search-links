@@ -25,10 +25,9 @@ import java.util.List;
 public class GetLinksServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         EntityManagerFactory factory = StartupListener.getFactory(req.getServletContext());
         EntityManager manager = factory.createEntityManager();
-        //UsersDAO userDao = new UsersDAO(manager);
         SitesDAO sitesDao = new SitesDAO(manager);
         PagesDAO pagesDAO = new PagesDAO(manager);
         LinksDAO linksDAO = new LinksDAO(manager);
@@ -38,9 +37,9 @@ public class GetLinksServlet extends HttpServlet {
 
         List<Link> allLinks = new ArrayList<>();
 
-        for (Page pp: pages) {
-            String path = pp.getPath();
-            List<Link> links = pp.getLinks(path);
+        for (Page page: pages) {
+            String path = page.getPath();
+            List<Link> links = page.getLinks(path);
             allLinks.addAll(links);
         }
         try {

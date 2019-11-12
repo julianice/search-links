@@ -9,6 +9,9 @@ import searchlinks.entities.Site;
 import searchlinks.entities.User;
 import searchlinksTests.BaseTest;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class LinkTest extends BaseTest {
     private User owner;
