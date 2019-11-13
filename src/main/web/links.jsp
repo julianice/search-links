@@ -19,19 +19,18 @@
     </thead>
     <tbody>
     <c:forEach items="${links}" var="allLinks">
+    <form method="post" action="/markfordelete">
     <tr>
         <td>${allLinks.page}</td>
         <td>${allLinks.url}</td>
         <td>
-<%--        <input type="checkbox" name="willBeDeleted" value=${allLinks.willBeDeleted}> Will be deleted--%>
-        <input type="checkbox" name="willBeDeleted" value="${param['willBeDeleted']}"> Will be deleted
+        <input type="checkbox" name="delete"> Will be deleted
         </td>
     </tr>
     </c:forEach>
     </tbody>
 </table>
-<form method="post" action="/markfordelete">
-    <p><input type="submit" NAME="Mark for deleting"></p>
+    <p><input type="submit"></p>
 </form>
 </body>
 </html>

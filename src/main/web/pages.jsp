@@ -25,7 +25,7 @@
 </table>
 
 <form method="post" action="/getlinks">
-    <p><input type="submit" NAME="Get links!!"></p>
+    <p><input type="submit"></p>
 </form>
 </body>
 </html>

@@ -26,12 +26,7 @@ public class MarkLinksForDeletingServlet extends HttpServlet {
         EntityManagerFactory factory = StartupListener.getFactory(req.getServletContext());
         EntityManager manager = factory.createEntityManager();
 
-        System.out.println(req.getSession().getAttribute("willBeDeleted"));
-
-        List<Link> links1  = (List<Link>) req.getSession().getAttribute("willBeDeleted");
-        System.out.println(links1);
-
-            req.setAttribute("linksWillBeDeleted", links1);
+            //req.setAttribute("linksWillBeDeleted", links1);
             req.getRequestDispatcher("/linkswillbedeleted.jsp").forward(req, resp);
 
     }
