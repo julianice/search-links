@@ -24,7 +24,7 @@
         <td>${allLinks.page}</td>
         <td>${allLinks.url}</td>
         <td>
-        <input type="checkbox" name="delete"> Will be deleted
+        <input type="checkbox" name="delete-${allLinks.id}"> Will be deleted
         </td>
     </tr>
     </c:forEach>

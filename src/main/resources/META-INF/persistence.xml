@@ -10,7 +10,7 @@
             <property name="hibernate.connection.url" value="jdbc:h2:~/test_db;AUTO_SERVER=TRUE" />
             <property name="hibernate.connection.user" value="sa" />
             <property name="hibernate.connection.password" value="" />
-            <property name="hibernate.connection." value="" />
+<!--            <property name="hibernate.connection." value="" />-->
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>

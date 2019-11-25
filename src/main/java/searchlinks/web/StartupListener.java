@@ -1,4 +1,10 @@
 package searchlinks.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import searchlinks.dao.UsersDAO;
 import searchlinks.entities.User;
 
@@ -12,43 +18,23 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.ServletContextListener;
 
 
-@WebListener
-public class StartupListener implements ServletContextListener {
+@Component
+public class StartupListener {
 
-    @Override
-    public void contextInitialized(ServletContextEvent event) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
+    @Autowired
+    private UsersDAO dao;
+
+    @EventListener
+    @Transactional
+    public void handleContextRefreshEvent(ContextRefreshedEvent ctxStartEvt) {
 
         User testAccount;
-        EntityManager manager = factory.createEntityManager();
-        manager.getTransaction().begin();
-        UsersDAO dao = new UsersDAO(manager);
         try {
             testAccount = dao.findByLogin("test");
-
         } catch (NoResultException notFound) {
             testAccount = new User("test", "123");
 
             dao.create(testAccount);
-
-
-            manager.getTransaction().commit();
-        } finally {
-            manager.close();
         }
-
-        event.getServletContext().setAttribute("factory", factory);
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent event) {
-        EntityManagerFactory factory = getFactory(event.getServletContext());
-        if (factory != null) {
-            factory.close();
-        }
-    }
-
-    public static EntityManagerFactory getFactory(ServletContext context) {
-        return (EntityManagerFactory) context.getAttribute("factory");
     }
 }

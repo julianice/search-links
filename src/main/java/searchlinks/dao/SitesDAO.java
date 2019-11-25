@@ -1,18 +1,27 @@
 package searchlinks.dao;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import searchlinks.entities.Site;
 import searchlinks.entities.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
 public class SitesDAO {
-    private final EntityManager manager;
+
+    @PersistenceContext
+    private EntityManager manager;
+
+    public SitesDAO(){}
 
     public SitesDAO(EntityManager manager) {
         this.manager = manager;
     }
 
+    @Transactional
     public void create(Site site) {
         manager.persist(site);
     }
