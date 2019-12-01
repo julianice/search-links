@@ -1,7 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="links" scope="request" type="java.util.List<searchlinks.entities.Link>"/>
 <html>
 <head>
 </head>
@@ -24,7 +23,7 @@
         <td>${allLinks.page}</td>
         <td>${allLinks.url}</td>
         <td>
-        <input type="checkbox" name="delete-${allLinks.id}"> Will be deleted
+        <input type="checkbox" name="delete" value="${allLinks.id}"> Will be deleted
         </td>
     </tr>
     </c:forEach>

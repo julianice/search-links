@@ -18,21 +18,18 @@ public class Link {
     @ManyToOne
     private Page page;
 
+    @ManyToOne
+    private Site site;
+
     @Column
     private boolean willBeDeleted;
 
     public Link() {}
 
-    @Override
-    public String toString() {
-        return "";
-    }
-
-    public Link(Page page, String url) {
+    public Link(Site site, Page page, String url) {
+        this.site = site;
         this.page  = page;
         this.url = url;
         this.willBeDeleted = false;
     }
-
-    //TODO метод для пометки удаления
 }

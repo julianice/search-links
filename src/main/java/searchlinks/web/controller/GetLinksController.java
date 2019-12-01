@@ -1,47 +1,61 @@
 package searchlinks.web.controller;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
+import searchlinks.dao.LinksRepository;
+import searchlinks.dao.PagesRepository;
+import searchlinks.dao.SitesRepository;
+import searchlinks.dao.UsersRepository;
+import searchlinks.entities.Link;
+import searchlinks.entities.Page;
+import searchlinks.entities.Site;
+import searchlinks.web.service.GettingSomeLinksService;
 
-@WebServlet(urlPatterns = "/getlinks")
-public class GetLinksController extends HttpServlet {
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //EntityManagerFactory factory = StartupListener.getFactory(req.getServletContext());
-        //EntityManager manager = factory.createEntityManager();
-//        SitesDAO sitesDao = new SitesDAO(manager);
-//        PagesDAO pagesDAO = new PagesDAO(manager);
-//        LinksDAO linksDAO = new LinksDAO(manager);
-//        String domain = (String) req.getSession().getAttribute("domain");
-//
-//        List<Page> pages = pagesDAO.findPagesForSite(sitesDao.findByDomain(domain));
-//
-//        List<Link> allLinks = new ArrayList<>();
-//
-//        for (Page page: pages) {
-//            String path = page.getPath();
-//            List<Link> links = page.getLinks(path);
-//            allLinks.addAll(links);
-//        }
-//        try {
-//            manager.getTransaction().begin();
-//            for (Link link : allLinks) {
-//                linksDAO.create(link);
-//            }
-//            manager.getTransaction().commit();
-//
-//            req.setAttribute("links", allLinks);
-//            req.getRequestDispatcher("/links.jsp").forward(req, resp);
-//        } catch (NoResultException notFound) {
-//            req.getRequestDispatcher("/").forward(req, resp);
-//        } finally {
-//            manager.close();
-//        }
-//    }
+@Controller
+public class GetLinksController {
+
+    @Autowired
+    UsersRepository usersRepository;
+
+    @Autowired
+    PagesRepository pagesRepository;
+
+    @Autowired
+    SitesRepository sitesRepository;
+
+    @Autowired
+    LinksRepository linksRepository;
+
+    @Autowired
+    GettingSomeLinksService gettingSomeLinksService;
+
+    @PostMapping(path = "/getlinks")
+    protected String getLinks(HttpSession session,
+                              ModelMap model) {
+
+        Integer siteId = (Integer) session.getAttribute("siteId");
+        Site site = sitesRepository.findById(siteId).get();
+
+        List<Page> pages = pagesRepository.findBySite(site);
+        List<Link> allLinks = new ArrayList<>();
+
+        for (Page page : pages) {
+            List<Link> linksForOnePage = gettingSomeLinksService.getLinks(site, page);
+            allLinks.addAll(linksForOnePage);
+        }
+
+        model.addAttribute("links", allLinks);
+
+        //TODO нужна ли добавка листа разом?
+        for (Link link : allLinks) {
+            linksRepository.save(link);
+        }
+        return "links";
     }
 }

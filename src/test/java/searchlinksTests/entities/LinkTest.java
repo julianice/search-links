@@ -30,7 +30,7 @@ public class LinkTest extends BaseTest {
 
     @Test
     public void createLink() {
-        Link link = new Link(page, LINK_1);
+        Link link = new Link(site,page, LINK_1);
         manager.getTransaction().begin();
         try {
             manager.persist(link);

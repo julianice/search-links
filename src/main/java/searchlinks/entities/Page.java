@@ -26,7 +26,8 @@ public class Page {
     @Column(unique = true, nullable = false)
     private String path;
 
-    @OneToMany
+    //TODO узнать про fetch
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Link> links;
 
     @ManyToOne
@@ -43,20 +44,5 @@ public class Page {
         this.site = site;
         this.path = path;
         this.links = new ArrayList<>();
-    }
-
-    public List<Link> getLinks(String pagePath) {
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(pagePath).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (Element e : doc.select("a[href]")) {
-                if(e.attr("href").contains("http")){
-                    this.links.add(new Link(this, e.attr("href")));
-                }
-        }
-        return links;
     }
 }

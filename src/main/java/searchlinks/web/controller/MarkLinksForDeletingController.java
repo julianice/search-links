@@ -1,22 +1,42 @@
 package searchlinks.web.controller;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import searchlinks.dao.LinksRepository;
+import searchlinks.dao.SitesRepository;
+import searchlinks.entities.Link;
+import searchlinks.entities.Site;
 
-@WebServlet(urlPatterns = "/markfordelete")
-public class MarkLinksForDeletingController extends HttpServlet {
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //EntityManagerFactory factory = StartupListener.getFactory(req.getServletContext());
-        //EntityManager manager = factory.createEntityManager();
-//        System.out.println(req.getAttribute("type"));
-//        System.out.println(req.getSession().getAttribute("type"));
-//        req.getRequestDispatcher("/linkswillbedeleted.jsp").forward(req, resp);
+@Controller
+public class MarkLinksForDeletingController  {
 
+    @Autowired
+    LinksRepository linksRepository;
+
+    @Autowired
+    SitesRepository sitesRepository;
+
+    @PostMapping("/markfordelete")
+    protected String markForDelete (HttpSession session,
+                          @RequestParam List<Integer> delete,
+                          ModelMap model) {
+        List<Link> links;
+        Integer siteId = (Integer) session.getAttribute("siteId");
+        Site site = sitesRepository.findById(siteId).get();
+
+        for (Integer idLinkForDelete: delete) {
+            Link link  = linksRepository.findById(idLinkForDelete).get();
+            link.setWillBeDeleted(true);
+            linksRepository.save(link);
+        }
+        links = linksRepository.findAllByWillBeDeleted(site);
+        model.addAttribute("links", links);
+        return "linkswillbedeleted";
     }
 }

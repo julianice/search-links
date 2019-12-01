@@ -19,7 +19,7 @@
 
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>searchlinks.web.AppConfig</param-value>
+            <param-value>searchlinks.web.config.AppConfig</param-value>
         </init-param>
 
         <load-on-startup>1</load-on-startup>
@@ -29,5 +29,4 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
 </web-app>
