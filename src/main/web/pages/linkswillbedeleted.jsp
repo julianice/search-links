@@ -17,10 +17,10 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${links}" var="links">
+    <c:forEach items="${links}" var="linksForDeleting">
         <tr>
-            <td>${links.page}</td>
-            <td>${links.url}</td>
+            <td>${linksForDeleting.page}</td>
+            <td>${linksForDeleting.url}</td>
         </tr>
     </c:forEach>
     </tbody>

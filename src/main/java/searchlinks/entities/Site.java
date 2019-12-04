@@ -32,6 +32,6 @@ public class Site {
     public Site(User user, String domain) {
         this.owner = user;
         this.domain = domain;
-        pages = new ArrayList<>();
+        this.pages = new ArrayList<>();
     }
 }

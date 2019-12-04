@@ -16,7 +16,7 @@ public class LoginController {
     UsersRepository users;
 
     @GetMapping(path = "/")
-    protected String getIndex() {
+    protected String getStartPage() {
         return "start_page";
     }
 

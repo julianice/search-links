@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import searchlinks.dao.LinksRepository;
 import searchlinks.dao.SitesRepository;
-import searchlinks.entities.Link;
-import searchlinks.entities.Site;
+import searchlinks.entities.*;
+import searchlinks.web.exception.NotFoundEntityException;
+//import searchlinks.entities.Site;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -22,21 +23,21 @@ public class MarkLinksForDeletingController  {
     @Autowired
     SitesRepository sitesRepository;
 
-    @PostMapping("/markfordelete")
-    protected String markForDelete (HttpSession session,
-                          @RequestParam List<Integer> delete,
-                          ModelMap model) {
-        List<Link> links;
+    @PostMapping("/markfordeleting")
+    protected String markForDeleting (HttpSession session,
+                          @RequestParam List<Integer> linkIdForDeleting,
+                          ModelMap model) throws NotFoundEntityException {
+        List<Link> linksForDeleting;
         Integer siteId = (Integer) session.getAttribute("siteId");
-        Site site = sitesRepository.findById(siteId).get();
+        Site site = sitesRepository.findById(siteId).orElseThrow(() -> new NotFoundEntityException("Site is not found"));
 
-        for (Integer idLinkForDelete: delete) {
-            Link link  = linksRepository.findById(idLinkForDelete).get();
+        for (Integer linkId: linkIdForDeleting) {
+            Link link  = linksRepository.findById(linkId).get();
             link.setWillBeDeleted(true);
             linksRepository.save(link);
         }
-        links = linksRepository.findAllByWillBeDeleted(site);
-        model.addAttribute("links", links);
+        linksForDeleting = linksRepository.findAllByWillBeDeleted(site);
+        model.addAttribute("links", linksForDeleting);
         return "linkswillbedeleted";
     }
 }

@@ -11,7 +11,8 @@ import searchlinks.dao.UsersRepository;
 import searchlinks.entities.Page;
 import searchlinks.entities.Site;
 import searchlinks.entities.User;
-import searchlinks.web.service.GettingSomeLinksService;
+import searchlinks.web.exception.NotFoundEntityException;
+import searchlinks.web.service.LinkAnalysisService;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -30,22 +31,21 @@ public class GetPagesController {
     SitesRepository sitesRepository;
 
     @Autowired
-    GettingSomeLinksService gettingSomeLinksService;
+    LinkAnalysisService linkAnalysisService;
 
     @PostMapping(path = "/getpages")
     protected String getPages(HttpSession session,
                               @RequestParam String domain,
-                              ModelMap model) {
+                              ModelMap model) throws NotFoundEntityException {
 
         int userId = (int) session.getAttribute("userId");
-        Optional<User> user = usersRepository.findById(userId);
+        User user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundEntityException("User is not found"));
 
-        //TODO delete Optional.get()
-        Site newSite = new Site(user.get(), domain);
+        Site newSite = new Site(user, domain);
         sitesRepository.save(newSite);
         session.setAttribute("siteId", newSite.getId());
 
-        List<Page> pages = gettingSomeLinksService.getPages(newSite);
+        List<Page> pages = linkAnalysisService.getPages(newSite);
         for (Page page : pages) {
             pagesRepository.save(page);
         }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GettingSomeLinksService {
+public class LinkAnalysisService {
 
     public List<Page> getPages(Site site) {
         List<Page> pages = new ArrayList<>();

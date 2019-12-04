@@ -11,7 +11,8 @@ import searchlinks.dao.UsersRepository;
 import searchlinks.entities.Link;
 import searchlinks.entities.Page;
 import searchlinks.entities.Site;
-import searchlinks.web.service.GettingSomeLinksService;
+import searchlinks.web.exception.NotFoundEntityException;
+import searchlinks.web.service.LinkAnalysisService;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -33,26 +34,26 @@ public class GetLinksController {
     LinksRepository linksRepository;
 
     @Autowired
-    GettingSomeLinksService gettingSomeLinksService;
+    LinkAnalysisService linkAnalysisService;
 
     @PostMapping(path = "/getlinks")
     protected String getLinks(HttpSession session,
-                              ModelMap model) {
+                              ModelMap model) throws NotFoundEntityException {
 
         Integer siteId = (Integer) session.getAttribute("siteId");
-        Site site = sitesRepository.findById(siteId).get();
+        Site site = sitesRepository.findById(siteId).orElseThrow(()  -> new NotFoundEntityException("Site is not found"));
 
         List<Page> pages = pagesRepository.findBySite(site);
         List<Link> allLinks = new ArrayList<>();
 
         for (Page page : pages) {
-            List<Link> linksForOnePage = gettingSomeLinksService.getLinks(site, page);
+            List<Link> linksForOnePage = linkAnalysisService.getLinks(site, page);
             allLinks.addAll(linksForOnePage);
         }
 
         model.addAttribute("links", allLinks);
 
-        //TODO нужна ли добавка листа разом?
+        //TODO нужна ли добавка листа разом?если указать @transactional над методом, то в одну транзакцию объединятся все в методе?
         for (Link link : allLinks) {
             linksRepository.save(link);
         }
