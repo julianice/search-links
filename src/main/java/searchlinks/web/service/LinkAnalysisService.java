@@ -28,7 +28,7 @@ public class LinkAnalysisService {
         try {
             doc = Jsoup.connect(site.getDomain()).get();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Connect with site is broken");
         }
 
         List<Future<Page>> futures = new ArrayList<>();
@@ -41,40 +41,40 @@ public class LinkAnalysisService {
         }
 
         for (Future<Page> futurePage : futures) {
-            if (futurePage.isDone()) {
-                try {
-                    pages.add(futurePage.get());
-                } catch (InterruptedException | ExecutionException e) {
-                    logger.error("Getting page was interrupted");
-                }
+            try {
+                pages.add(futurePage.get());
+            } catch (InterruptedException | ExecutionException e) {
+                logger.error("Getting page was interrupted");
             }
         }
         return pages;
     }
 
-    public List<Link> getLinks(Site site, Page page) throws ExecutionException, InterruptedException {
+    public List<Link> getLinks(Site site, Page page) {
         List<Link> links = new ArrayList<>();
         Document doc = null;
         try {
             doc = Jsoup.connect(page.getPath()).get();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Connect with page is broken");
         }
-        List<Future<Link>> futures = new ArrayList<>();
 
+        List<Future<Link>> futures = new ArrayList<>();
         for (Element e : doc.select("a[href]")) {
             if (e.attr("href").contains("http")) {
-                Future<Link> future = executorService.submit(() -> {
+                Future<Link> futureLink = executorService.submit(() -> {
                     Link link = new Link(site, page, e.attr("href"));
                     return link;
                 });
-                futures.add(future);
+                futures.add(futureLink);
             }
         }
 
-        for (Future<Link> linkFuture : futures) {
-            if (linkFuture.isDone()) {
-                links.add(linkFuture.get());
+        for (Future<Link> futureLink : futures) {
+            try {
+                links.add(futureLink.get());
+            } catch (InterruptedException | ExecutionException e) {
+                logger.error("Getting page was interrupted");
             }
         }
         return links;
